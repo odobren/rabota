@@ -1,4 +1,5 @@
 
+document.addEventListener('DOMContentLoaded', function() {
 
   // Загружаем данные из локального хранилища, если они есть
   var savedName = localStorage.getItem('employeeName');
