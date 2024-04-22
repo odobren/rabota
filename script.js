@@ -18,9 +18,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  // Загружаем данные из локального хранилища, если они есть
+  var savedName = localStorage.getItem('employeeName');
+  if (savedName) {
+    document.getElementById('name').value = savedName;
+  }
+
   document.getElementById('employeeForm').addEventListener('submit', function(e) {
     e.preventDefault();
     var formData = new FormData(this);
+    var employeeName = formData.get('name');
+
+    // Сохраняем имя в локальном хранилище
+    localStorage.setItem('employeeName', employeeName);
 
     // Показываем анимацию загрузки
     document.getElementById('startDayBtn').style.display = 'none';
@@ -38,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(data => {
       // Перенаправляем пользователя на указанную страницу
-      window.location.href = 'https://test13423424.glitch.me/ura.html';
+      window.location.href = 'https://odobren.github.io/rabota/ura';
     })
     .catch(error => {
       console.error('Произошла ошибка:', error);
