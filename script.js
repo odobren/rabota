@@ -1,22 +1,4 @@
-$(document).ready(function() {
-  // Разрешенный IP-адрес
-  var allowedIP = '178.129.244.145';
-
-  // Функция для получения IP-адреса пользователя
-  function getUserIP(callback) {
-    $.getJSON('https://api.ipify.org?format=json', function(data) {
-      callback(data.ip);
-    });
-  }
-
-  // Проверяем IP-адрес пользователя и перенаправляем, если не разрешен
-  getUserIP(function(userIP) {
-    if (userIP !== allowedIP) {
-      window.location.href = 'https://test13423424.glitch.me/zapret.html'; // Замените на вашу страницу отказа в доступе
-    }
-  });
-
-  $('#employeeForm').submit(function(e) {
+ $('#employeeForm').submit(function(e) {
     e.preventDefault();
     var formData = $(this).serialize();
     
@@ -30,7 +12,7 @@ $(document).ready(function() {
       data: formData,
       success: function(response) {
         // Перенаправляем пользователя на указанную страницу
-        window.location.href = 'https://test13423424.glitch.me/ura.html';
+        window.location.href = 'https://odobren.github.io/rabota/ura';
       },
       error: function(xhr, status, error) {
         console.error('Произошла ошибка:', error);
