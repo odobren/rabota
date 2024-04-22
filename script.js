@@ -1,27 +1,52 @@
- $('#employeeForm').submit(function(e) {
-    e.preventDefault();
-    var formData = $(this).serialize();
-    
-    // Показываем анимацию загрузки
-    $('#startDayBtn').hide();
-    $('#loader').show();
+document.addEventListener('DOMContentLoaded', function() {
+  // Разрешенный IP-адрес
+  var allowedIP = '178.129.244.145';
 
-    $.ajax({
-      url: 'https://script.google.com/macros/s/AKfycbwwcrSFowRKfBVfw4gFi-dW_yQILxJgh97nq0wQLE257CJ4hUS2d9J_1MwEEy1IDp1dtg/exec',
-      type: 'POST',
-      data: formData,
-      success: function(response) {
-        // Перенаправляем пользователя на указанную страницу
-        window.location.href = 'https://odobren.github.io/rabota/ura';
-      },
-      error: function(xhr, status, error) {
-        console.error('Произошла ошибка:', error);
-      },
-      complete: function() {
-        // По окончании запроса скрываем анимацию загрузки и показываем кнопку
-        $('#loader').hide();
-        $('#startDayBtn').show();
+  // Функция для получения IP-адреса пользователя
+  function getUserIP(callback) {
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        callback(data.ip);
+      });
+  }
+
+  // Проверяем IP-адрес пользователя и перенаправляем, если не разрешен
+  getUserIP(function(userIP) {
+    if (userIP !== allowedIP) {
+      window.location.href = 'https://test13423424.glitch.me/zapret.html'; // Замените на вашу страницу отказа в доступе
+    }
+  });
+
+  document.getElementById('employeeForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+
+    // Показываем анимацию загрузки
+    document.getElementById('startDayBtn').style.display = 'none';
+    document.getElementById('loader').style.display = 'block';
+
+    fetch('https://script.google.com/macros/s/AKfycbwwcrSFowRKfBVfw4gFi-dW_yQILxJgh97nq0wQLE257CJ4hUS2d9J_1MwEEy1IDp1dtg/exec', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
+      return response.text();
+    })
+    .then(data => {
+      // Перенаправляем пользователя на указанную страницу
+      window.location.href = 'https://test13423424.glitch.me/ura.html';
+    })
+    .catch(error => {
+      console.error('Произошла ошибка:', error);
+    })
+    .finally(() => {
+      // По окончании запроса скрываем анимацию загрузки и показываем кнопку
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById('startDayBtn').style.display = 'block';
     });
   });
 });
