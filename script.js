@@ -1,6 +1,23 @@
 
 document.addEventListener('DOMContentLoaded', function() {
+// Разрешенный IP-адрес
+  var allowedIP = '89.218.86.15';
 
+  // Функция для получения IP-адреса пользователя
+  function getUserIP(callback) {
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        callback(data.ip);
+      });
+  }
+
+  // Проверяем IP-адрес пользователя и перенаправляем, если не разрешен
+  getUserIP(function(userIP) {
+    if (userIP !== allowedIP) {
+      window.location.href = 'https://odobren.github.io/rabota/zapret'; // Замените на вашу страницу отказа в доступе
+    }
+  });
   // Загружаем данные из локального хранилища, если они есть
   var savedName = localStorage.getItem('employeeName');
   if (savedName) {
