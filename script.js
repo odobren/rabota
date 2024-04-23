@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-
   // Загружаем данные из локального хранилища, если они есть
   var savedName = localStorage.getItem('employeeName');
   if (savedName) {
@@ -10,24 +9,26 @@ document.addEventListener('DOMContentLoaded', function() {
     e.preventDefault();
     var formData = new FormData(this);
     var employeeName = formData.get('name');
-    var endpointUrl;
-
-    // Определяем URL в зависимости от того, какая кнопка была нажата
-    if (e.target.id === 'startDayBtn') {
-      endpointUrl = 'https://script.google.com/macros/s/AKfycbwqx3CH75w1dG1KWif0b9EnrIwKb8Mwlb_GbVn5rnshofcAF-WqxKVcgBJ9haGgbkOE/exec';
-    } else if (e.target.id === 'endDayBtn') {
-      endpointUrl = 'https://script.google.com/macros/s/AKfycbxpx5CH76w1dG2KWjf0c9FnsIwKb8Mwlb_HbVn5rnshiicAF-XqxEVcgCJ9haGgbkOE/exec';
-    }
 
     // Сохраняем имя в локальном хранилище
     localStorage.setItem('employeeName', employeeName);
 
+    // Определяем, какая кнопка была нажата
+    var buttonId = e.submitter.id;
+
     // Показываем анимацию загрузки
-    document.getElementById('startDayBtn').style.display = 'none';
-    document.getElementById('endDayBtn').style.display = 'none';
+    document.getElementById(buttonId).style.display = 'none';
     document.getElementById('loader').style.display = 'block';
 
-    fetch(endpointUrl, {
+    // Определяем URL в зависимости от того, какая кнопка была нажата
+    var url = '';
+    if (buttonId === 'startDayBtn') {
+      url = 'https://odobren.github.io/rabota/ura';
+    } else if (buttonId === 'endDayBtn') {
+      url = 'https://odobren.github.io/rabota/poka';
+    }
+
+    fetch('https://script.google.com/macros/s/AKfycbwqx3CH75w1dG1KWif0b9EnrIwKb8Mwlb_GbVn5rnshofcAF-WqxKVcgBJ9haGgbkOE/exec', {
         method: 'POST',
         body: formData
     })
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(data => {
       // Перенаправляем пользователя на указанную страницу
-      window.location.href = 'https://odobren.github.io/rabota/ura';
+      window.location.href = url;
     })
     .catch(error => {
       console.error('Произошла ошибка:', error);
@@ -47,8 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .finally(() => {
       // По окончании запроса скрываем анимацию загрузки и показываем кнопку
       document.getElementById('loader').style.display = 'none';
-      document.getElementById('startDayBtn').style.display = 'block';
-      document.getElementById('endDayBtn').style.display = 'block';
+      document.getElementById(buttonId).style.display = 'block';
     });
   });
 });
