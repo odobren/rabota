@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('startDayBtn').style.display = 'none';
     document.getElementById('loader').style.display = 'block';
 
-    fetch('https://script.google.com/macros/s/AKfycbwwcrSFowRKfBVfw4gFi-dW_yQILxJgh97nq0wQLE257CJ4hUS2d9J_1MwEEy1IDp1dtg/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbwqx3CH75w1dG1KWif0b9EnrIwKb8Mwlb_GbVn5rnshofcAF-WqxKVcgBJ9haGgbkOE/exec', {
         method: 'POST',
         body: formData
     })
