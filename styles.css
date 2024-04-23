@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #ffffcc; /* Жёлтый цвет фона */
+  background-color: #ffffcc;
   margin: 0;
   padding: 0;
   display: flex;
@@ -33,19 +33,20 @@ input[type="text"] {
   margin-bottom: 20px;
 }
 
-button[type="submit"] {
-  background-color: #ffcc00; /* Жёлтый цвет кнопки */
-  color: #000; /* Чёрный цвет текста на кнопке */
+button {
+  background-color: #ffcc00;
+  color: #000;
   border: none;
   padding: 12px 20px;
   border-radius: 4px;
   cursor: pointer;
   display: block;
   width: 100%;
+  margin-bottom: 10px;
 }
 
-button[type="submit"]:hover {
-  background-color: #e6b800; /* Цвет кнопки при наведении */
+button:hover {
+  background-color: #e6b800;
 }
 
 .loader {
