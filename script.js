@@ -10,6 +10,14 @@ document.addEventListener('DOMContentLoaded', function() {
     e.preventDefault();
     var formData = new FormData(this);
     var employeeName = formData.get('name');
+    var endpointUrl;
+
+    // Определяем URL в зависимости от того, какая кнопка была нажата
+    if (e.target.id === 'startDayBtn') {
+      endpointUrl = 'https://script.google.com/macros/s/AKfycbwqx3CH75w1dG1KWif0b9EnrIwKb8Mwlb_GbVn5rnshofcAF-WqxKVcgBJ9haGgbkOE/exec';
+    } else if (e.target.id === 'endDayBtn') {
+      endpointUrl = 'https://script.google.com/macros/s/AKfycbxpx5CH76w1dG2KWjf0c9FnsIwKb8Mwlb_HbVn5rnshiicAF-XqxEVcgCJ9haGgbkOE/exec';
+    }
 
     // Сохраняем имя в локальном хранилище
     localStorage.setItem('employeeName', employeeName);
@@ -19,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('endDayBtn').style.display = 'none';
     document.getElementById('loader').style.display = 'block';
 
-    fetch('https://script.google.com/macros/s/AKfycbwqx3CH75w1dG1KWif0b9EnrIwKb8Mwlb_GbVn5rnshofcAF-WqxKVcgBJ9haGgbkOE/exec', {
+    fetch(endpointUrl, {
         method: 'POST',
         body: formData
     })
@@ -30,12 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
       return response.text();
     })
     .then(data => {
-      // Перенаправляем пользователя на указанную страницу в зависимости от нажатой кнопки
-      if (document.getElementById('startDayBtn').style.display === 'none') {
-        window.location.href = 'https://odobren.github.io/rabota/ura';
-      } else {
-        window.location.href = 'https://odobren.github.io/rabota/poka';
-      }
+      // Перенаправляем пользователя на указанную страницу
+      window.location.href = 'https://odobren.github.io/rabota/ura';
     })
     .catch(error => {
       console.error('Произошла ошибка:', error);
@@ -46,11 +50,5 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('startDayBtn').style.display = 'block';
       document.getElementById('endDayBtn').style.display = 'block';
     });
-  });
-
-  // Добавляем обработчик для кнопки "Завершить день"
-  document.getElementById('endDayBtn').addEventListener('click', function() {
-    // При клике на кнопку "Завершить день" происходит отправка формы с пустыми данными
-    document.getElementById('employeeForm').submit();
   });
 });
