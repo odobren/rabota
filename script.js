@@ -1,57 +1,56 @@
 document.addEventListener('DOMContentLoaded', function() {
-  var employeeForm = document.getElementById('employeeForm');
-  var loader = document.getElementById('loader');
+  // Загружаем данные из локального хранилища, если они есть
+  var savedName = localStorage.getItem('employeeName');
+  if (savedName) {
+    document.getElementById('name').value = savedName;
+  }
 
-  employeeForm.addEventListener('submit', function(e) {
+  document.getElementById('employeeForm').addEventListener('submit', function(e) {
     e.preventDefault();
     var formData = new FormData(this);
     var employeeName = formData.get('name');
-    var action = e.target.querySelector('.action-btn:focus').getAttribute('data-action');
 
+    // Сохраняем имя в локальном хранилище
     localStorage.setItem('employeeName', employeeName);
 
+    // Определяем, какая кнопка была нажата
+    var buttonId = e.submitter.id;
+
+    // Показываем анимацию загрузки
+    document.getElementById(buttonId).style.display = 'none';
+    document.getElementById('loader').style.display = 'block';
+
+    // Определяем URL в зависимости от того, какая кнопка была нажата
     var url = '';
-    if (action === 'start') {
+    if (buttonId === 'startDayBtn') {
       url = 'https://odobren.github.io/rabota/ura';
-    } else if (action === 'end') {
+    } else if (buttonId === 'endDayBtn') {
       url = 'https://odobren.github.io/rabota/poka';
     }
 
-    showLoader();
-    sendDataToGoogleSheets(formData)
-      .then(() => {
-        redirectUser(url);
-      })
-      .catch(error => {
-        console.error('Произошла ошибка:', error);
-      })
-      .finally(() => {
-        hideLoader();
-      });
-  });
+    formData.append(buttonId, 'true'); // Добавляем параметр для определения нажатой кнопки
 
-  function sendDataToGoogleSheets(formData) {
-    return fetch('https://script.google.com/macros/s/AKfycbwqx3CH75w1dG1KWif0b9EnrIwKb8Mwlb_GbVn5rnshofcAF-WqxKVcgBJ9haGgbkOE/exec', {
-      method: 'POST',
-      body: formData
+    fetch('https://script.google.com/macros/s/AKfycbwqx3CH75w1dG1KWif0b9EnrIwKb8Mwlb_GbVn5rnshofcAF-WqxKVcgBJ9haGgbkOE/exec', {
+        method: 'POST',
+        body: formData
     })
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       return response.text();
+    })
+    .then(data => {
+      // Перенаправляем пользователя на указанную страницу
+      window.location.href = url;
+    })
+    .catch(error => {
+      console.error('Произошла ошибка:', error);
+    })
+    .finally(() => {
+      // По окончании запроса скрываем анимацию загрузки и показываем кнопку
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById(buttonId).style.display = 'block';
     });
-  }
-
-  function redirectUser(url) {
-    window.location.href = url;
-  }
-
-  function showLoader() {
-    loader.style.display = 'block';
-  }
-
-  function hideLoader() {
-    loader.style.display = 'none';
-  }
+  });
 });
