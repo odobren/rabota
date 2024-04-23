@@ -40,9 +40,9 @@ button[type="submit"] {
   padding: 12px 20px;
   border-radius: 4px;
   cursor: pointer;
-  display: inline-block;
-  width: calc(50% - 5px); /* Разделение кнопок на половины ширины контейнера с небольшим отступом */
-  margin-right: 5px;
+  display: inline-block; /* Размещаем кнопки в одной строке */
+  width: calc(50% - 5px); /* Ширина 50%, минус небольшой зазор */
+  margin-right: 10px; /* Добавляем небольшой отступ между кнопками */
 }
 
 button[type="submit"]:hover {
